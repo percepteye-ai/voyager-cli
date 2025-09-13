@@ -48,7 +48,15 @@ export const useAuthCommand = (settings: LoadedSettings, config: Config) => {
 
       const authType = settings.merged.security?.auth?.selectedType;
       if (!authType) {
-        if (process.env['GEMINI_API_KEY']) {
+        if (process.env['ANTHROPIC_API_KEY']) {
+          onAuthError(
+            'Existing API key detected (ANTHROPIC_API_KEY). Select "Use Anthropic API Key" option to use it.',
+          );
+        } else if (process.env['OPENAI_API_KEY']) {
+          onAuthError(
+            'Existing API key detected (OPENAI_API_KEY). Select "Use OpenAI API Key" option to use it.',
+          );
+        } else if (process.env['GEMINI_API_KEY']) {
           onAuthError(
             'Existing API key detected (GEMINI_API_KEY). Select "Gemini API Key" option to use it.',
           );

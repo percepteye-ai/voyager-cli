@@ -192,4 +192,8 @@ export class LoggingContentGenerator implements ContentGenerator {
   ): Promise<EmbedContentResponse> {
     return this.wrapped.embedContent(req);
   }
+
+  getModel(): string {
+    return this.wrapped.getModel();
+  }
 }

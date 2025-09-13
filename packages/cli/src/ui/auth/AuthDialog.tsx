@@ -54,6 +54,8 @@ export function AuthDialog({
       value: AuthType.USE_GEMINI,
     },
     { label: 'Vertex AI', value: AuthType.USE_VERTEX_AI },
+    { label: 'Use OpenAI', value: AuthType.USE_OPENAI },
+    { label: 'Use Anthropic', value: AuthType.USE_ANTHROPIC },
   ];
 
   if (settings.merged.security?.auth?.enforcedType) {
@@ -78,6 +80,14 @@ export function AuthDialog({
 
     if (defaultAuthType) {
       return item.value === defaultAuthType;
+    }
+
+    if (process.env['ANTHROPIC_API_KEY']) {
+      return item.value === AuthType.USE_ANTHROPIC;
+    }
+
+    if (process.env['OPENAI_API_KEY']) {
+      return item.value === AuthType.USE_OPENAI;
     }
 
     if (process.env['GEMINI_API_KEY']) {

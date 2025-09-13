@@ -96,6 +96,10 @@ function getRateLimitMessage(
       return RATE_LIMIT_ERROR_MESSAGE_USE_GEMINI;
     case AuthType.USE_VERTEX_AI:
       return RATE_LIMIT_ERROR_MESSAGE_VERTEX;
+    case AuthType.USE_OPENAI:
+      return 'OpenAI API rate limit exceeded. Please try again later or check your OpenAI account limits.';
+    case AuthType.USE_ANTHROPIC:
+      return 'Anthropic API rate limit exceeded. Please try again later or check your Anthropic account limits.';
     default:
       return getRateLimitErrorMessageDefault(fallbackModel);
   }

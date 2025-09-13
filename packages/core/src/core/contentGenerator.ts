@@ -19,6 +19,9 @@ import type { Config } from '../config/config.js';
 import type { UserTierId } from '../code_assist/types.js';
 import { LoggingContentGenerator } from './loggingContentGenerator.js';
 import { InstallationManager } from '../utils/installationManager.js';
+import { OpenAIContentGenerator } from './openaiContentGenerator.js';
+import { AnthropicContentGenerator } from './anthropicContentGenerator.js';
+import { GoogleGenAIWrapper } from './googleGenAIWrapper.js';
 
 /**
  * Interface abstracting the core functionalities for generating content and counting tokens.
@@ -38,6 +41,8 @@ export interface ContentGenerator {
 
   embedContent(request: EmbedContentParameters): Promise<EmbedContentResponse>;
 
+  getModel(): string;
+
   userTier?: UserTierId;
 }
 
@@ -46,6 +51,8 @@ export enum AuthType {
   USE_GEMINI = 'gemini-api-key',
   USE_VERTEX_AI = 'vertex-ai',
   CLOUD_SHELL = 'cloud-shell',
+  USE_OPENAI = 'openai-api-key',
+  USE_ANTHROPIC = 'anthropic-api-key',
 }
 
 export type ContentGeneratorConfig = {
@@ -53,6 +60,10 @@ export type ContentGeneratorConfig = {
   vertexai?: boolean;
   authType?: AuthType;
   proxy?: string;
+  openaiApiKey?: string;
+  openaiModel?: string;
+  anthropicApiKey?: string;
+  anthropicModel?: string;
 };
 
 export function createContentGeneratorConfig(
@@ -63,6 +74,11 @@ export function createContentGeneratorConfig(
   const googleApiKey = process.env['GOOGLE_API_KEY'] || undefined;
   const googleCloudProject = process.env['GOOGLE_CLOUD_PROJECT'] || undefined;
   const googleCloudLocation = process.env['GOOGLE_CLOUD_LOCATION'] || undefined;
+  const openaiApiKey = process.env['OPENAI_API_KEY'] || undefined;
+  const openaiModel = process.env['OPENAI_MODEL'] || 'gpt-4o';
+  const anthropicApiKey = process.env['ANTHROPIC_API_KEY'] || undefined;
+  const anthropicModel =
+    process.env['ANTHROPIC_MODEL'] || 'claude-3-5-sonnet-20241022';
 
   const contentGeneratorConfig: ContentGeneratorConfig = {
     authType,
@@ -90,6 +106,20 @@ export function createContentGeneratorConfig(
   ) {
     contentGeneratorConfig.apiKey = googleApiKey;
     contentGeneratorConfig.vertexai = true;
+
+    return contentGeneratorConfig;
+  }
+
+  if (authType === AuthType.USE_OPENAI && openaiApiKey) {
+    contentGeneratorConfig.openaiApiKey = openaiApiKey;
+    contentGeneratorConfig.openaiModel = openaiModel;
+
+    return contentGeneratorConfig;
+  }
+
+  if (authType === AuthType.USE_ANTHROPIC && anthropicApiKey) {
+    contentGeneratorConfig.anthropicApiKey = anthropicApiKey;
+    contentGeneratorConfig.anthropicModel = anthropicModel;
 
     return contentGeneratorConfig;
   }
@@ -144,8 +174,39 @@ export async function createContentGenerator(
       vertexai: config.vertexai,
       httpOptions,
     });
-    return new LoggingContentGenerator(googleGenAI.models, gcConfig);
+
+    // Determine the model name based on auth type and config
+    const modelName = config.vertexai ? 'vertex-ai' : 'gemini-2.5-pro';
+    const wrapper = new GoogleGenAIWrapper(googleGenAI.models, modelName);
+    return new LoggingContentGenerator(wrapper, gcConfig);
   }
+
+  if (config.authType === AuthType.USE_OPENAI) {
+    if (!config.openaiApiKey) {
+      throw new Error('OpenAI API key is required for OpenAI authentication');
+    }
+    const openaiGenerator = new OpenAIContentGenerator(
+      config.openaiApiKey,
+      config.openaiModel || 'gpt-4o',
+      gcConfig,
+    );
+    return new LoggingContentGenerator(openaiGenerator, gcConfig);
+  }
+
+  if (config.authType === AuthType.USE_ANTHROPIC) {
+    if (!config.anthropicApiKey) {
+      throw new Error(
+        'Anthropic API key is required for Anthropic authentication',
+      );
+    }
+    const anthropicGenerator = new AnthropicContentGenerator(
+      config.anthropicApiKey,
+      config.anthropicModel || 'claude-3-5-sonnet-20241022',
+      gcConfig,
+    );
+    return new LoggingContentGenerator(anthropicGenerator, gcConfig);
+  }
+
   throw new Error(
     `Error creating contentGenerator: Unsupported authType: ${config.authType}`,
   );

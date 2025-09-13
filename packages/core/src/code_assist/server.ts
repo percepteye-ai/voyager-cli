@@ -231,6 +231,10 @@ export class CodeAssistServer implements ContentGenerator {
       process.env['CODE_ASSIST_ENDPOINT'] ?? CODE_ASSIST_ENDPOINT;
     return `${endpoint}/${CODE_ASSIST_API_VERSION}:${method}`;
   }
+
+  getModel(): string {
+    return 'gemini-2.5-pro';
+  }
 }
 
 function isVpcScAffectedUser(error: unknown): boolean {

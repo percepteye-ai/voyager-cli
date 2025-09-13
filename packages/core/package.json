@@ -53,6 +53,8 @@
     "mime": "4.0.7",
     "mnemonist": "^0.40.3",
     "open": "^10.1.2",
+    "openai": "^4.67.3",
+    "@anthropic-ai/sdk": "^0.30.1",
     "picomatch": "^4.0.1",
     "shell-quote": "^1.8.3",
     "simple-git": "^3.28.0",

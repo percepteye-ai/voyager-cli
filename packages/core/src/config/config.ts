@@ -536,6 +536,14 @@ export class Config {
     return this.model;
   }
 
+  getEffectiveModel(): string {
+    try {
+      return this.contentGenerator?.getModel() || this.model;
+    } catch {
+      return this.model;
+    }
+  }
+
   setModel(newModel: string): void {
     // Do not allow Pro usage if the user is in fallback mode.
     if (newModel.includes('pro') && this.isInFallbackMode()) {

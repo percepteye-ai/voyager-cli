@@ -148,7 +148,44 @@ export GEMINI_API_KEY="YOUR_API_KEY"
 gemini
 ```
 
-### Option 3: Vertex AI
+### Option 3: OpenAI API Key
+
+**✨ Best for:** Developers who prefer OpenAI models or need specific OpenAI features
+
+**Benefits:**
+
+- **Access to OpenAI models**: GPT-4o, GPT-4, GPT-3.5-turbo, and more
+- **Model selection**: Choose specific OpenAI models via OPENAI_MODEL environment variable
+- **Usage-based billing**: Pay per token usage
+
+```bash
+# Get your key from https://platform.openai.com/api-keys
+export OPENAI_API_KEY="YOUR_API_KEY"
+# Optional: specify model (defaults to gpt-4o)
+export OPENAI_MODEL="gpt-4o"
+gemini
+```
+
+### Option 4: Anthropic API Key
+
+**✨ Best for:** Developers who prefer Claude models or need Anthropic's specific capabilities
+
+**Benefits:**
+
+- **Access to Claude models**: Claude 3.5 Sonnet, Claude 3 Opus, Claude 3 Haiku, and more
+- **Model selection**: Choose specific Anthropic models via ANTHROPIC_MODEL environment variable
+- **Usage-based billing**: Pay per token usage
+- **Advanced reasoning**: Claude's strong analytical and creative capabilities
+
+```bash
+# Get your key from https://console.anthropic.com/
+export ANTHROPIC_API_KEY="YOUR_API_KEY"
+# Optional: specify model (defaults to claude-3-5-sonnet-20241022)
+export ANTHROPIC_MODEL="claude-3-5-sonnet-20241022"
+gemini
+```
+
+### Option 5: Vertex AI
 
 **✨ Best for:** Enterprise teams and production workloads
 

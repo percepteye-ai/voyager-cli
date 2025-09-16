@@ -91,9 +91,9 @@ export async function parseArguments(settings: Settings): Promise<CliArgs> {
     .locale('en')
     .scriptName('gemini')
     .usage(
-      'Usage: gemini [options] [command]\n\nGemini CLI - Launch an interactive CLI, use -p/--prompt for non-interactive mode',
+      'Usage: voyager [options] [command]\n\nVoyager CLI - Launch an interactive CLI, use -p/--prompt for non-interactive mode',
     )
-    .command('$0 [promptWords...]', 'Launch Gemini CLI', (yargsInstance) =>
+    .command('$0 [promptWords...]', 'Launch Voyager CLI', (yargsInstance) =>
       yargsInstance
         .option('model', {
           alias: 'm',
@@ -216,7 +216,7 @@ export async function parseArguments(settings: Settings): Promise<CliArgs> {
         .option('proxy', {
           type: 'string',
           description:
-            'Proxy for gemini client, like schema://user:password@host:port',
+            'Proxy for voyager client, like schema://user:password@host:port',
         })
         .option('include-directories', {
           type: 'array',

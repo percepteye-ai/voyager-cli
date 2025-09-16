@@ -1,7 +1,7 @@
 {
   "name": "gemini-cli-vscode-ide-companion",
-  "displayName": "Gemini CLI Companion",
-  "description": "Enable Gemini CLI with direct access to your IDE workspace.",
+  "displayName": "Voyager CLI Companion",
+  "description": "Enable Voyager CLI with direct access to your IDE workspace.",
   "version": "0.6.0-nightly",
   "publisher": "google",
   "icon": "assets/icon.png",
@@ -39,21 +39,21 @@
     "commands": [
       {
         "command": "gemini.diff.accept",
-        "title": "Gemini CLI: Accept Diff",
+        "title": "Voyager CLI: Accept Diff",
         "icon": "$(check)"
       },
       {
         "command": "gemini.diff.cancel",
-        "title": "Gemini CLI: Close Diff Editor",
+        "title": "Voyager CLI: Close Diff Editor",
         "icon": "$(close)"
       },
       {
         "command": "gemini-cli.runGeminiCLI",
-        "title": "Gemini CLI: Run"
+        "title": "Voyager CLI: Run"
       },
       {
         "command": "gemini-cli.showNotices",
-        "title": "Gemini CLI: View Third-Party Notices"
+        "title": "Voyager CLI: View Third-Party Notices"
       }
     ],
     "menus": {

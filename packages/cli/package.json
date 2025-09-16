@@ -1,7 +1,7 @@
 {
   "name": "@google/gemini-cli",
   "version": "0.6.0-nightly",
-  "description": "Gemini CLI",
+  "description": "Voyager CLI",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/google-gemini/gemini-cli.git"

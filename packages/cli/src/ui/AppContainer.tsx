@@ -340,7 +340,7 @@ export const AppContainer = (props: AppContainerProps) => {
           await runExitCleanup();
           console.log(`
 ----------------------------------------------------------------
-Logging in with Google... Please restart Gemini CLI to continue.
+Logging in with Google... Please restart Voyager CLI to continue.
 ----------------------------------------------------------------
           `);
           process.exit(0);
@@ -465,7 +465,7 @@ Logging in with Google... Please restart Gemini CLI to continue.
     historyManager.addItem(
       {
         type: MessageType.INFO,
-        text: 'Refreshing hierarchical memory (GEMINI.md or other context files)...',
+        text: 'Refreshing hierarchical memory (VOYAGER.md or other context files)...',
       },
       Date.now(),
     );

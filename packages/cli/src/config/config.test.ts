@@ -687,7 +687,7 @@ describe('Hierarchical Memory Loading (config.ts) - Placeholder Suite', () => {
           name: 'ext1',
           version: '1.0.0',
         },
-        contextFiles: ['/path/to/ext1/GEMINI.md'],
+        contextFiles: ['/path/to/ext1/VOYAGER.md'],
       },
       {
         path: '/path/to/ext2',
@@ -717,7 +717,7 @@ describe('Hierarchical Memory Loading (config.ts) - Placeholder Suite', () => {
       false,
       expect.any(Object),
       [
-        '/path/to/ext1/GEMINI.md',
+        '/path/to/ext1/VOYAGER.md',
         '/path/to/ext3/context1.md',
         '/path/to/ext3/context2.md',
       ],
@@ -743,7 +743,7 @@ describe('Hierarchical Memory Loading (config.ts) - Placeholder Suite', () => {
     const MOCK_GEMINI_DIR_LOCAL = path.join('/mock/home/user', '.gemini');
     const MOCK_GLOBAL_PATH_LOCAL = path.join(
       MOCK_GEMINI_DIR_LOCAL,
-      'GEMINI.md',
+      'VOYAGER.md',
     );
     mockFs({
       [MOCK_GLOBAL_PATH_LOCAL]: { type: 'file', content: 'GlobalContentOnly' },

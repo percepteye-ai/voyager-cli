@@ -79,7 +79,7 @@ async function checkForUpdates(
 
     if (latestVersion && semver.gt(latestVersion, currentVersion)) {
       const selection = await vscode.window.showInformationMessage(
-        `A new version (${latestVersion}) of the Gemini CLI Companion extension is available.`,
+        `A new version (${latestVersion}) of the Voyager CLI Companion extension is available.`,
         'Update to latest version',
       );
       if (selection === 'Update to latest version') {
@@ -97,7 +97,7 @@ async function checkForUpdates(
 }
 
 export async function activate(context: vscode.ExtensionContext) {
-  logger = vscode.window.createOutputChannel('Gemini CLI IDE Companion');
+  logger = vscode.window.createOutputChannel('Voyager CLI IDE Companion');
   log = createLogger(context, logger);
   log('Extension activated');
 
@@ -149,7 +149,7 @@ export async function activate(context: vscode.ExtensionContext) {
 
   if (!context.globalState.get(INFO_MESSAGE_SHOWN_KEY) && infoMessageEnabled) {
     void vscode.window.showInformationMessage(
-      'Gemini CLI Companion extension successfully installed.',
+      'Voyager CLI Companion extension successfully installed.',
     );
     context.globalState.update(INFO_MESSAGE_SHOWN_KEY, true);
   }
@@ -165,7 +165,7 @@ export async function activate(context: vscode.ExtensionContext) {
       const workspaceFolders = vscode.workspace.workspaceFolders;
       if (!workspaceFolders || workspaceFolders.length === 0) {
         vscode.window.showInformationMessage(
-          'No folder open. Please open a folder to run Gemini CLI.',
+          'No folder open. Please open a folder to run Voyager CLI.',
         );
         return;
       }
@@ -175,14 +175,14 @@ export async function activate(context: vscode.ExtensionContext) {
         selectedFolder = workspaceFolders[0];
       } else {
         selectedFolder = await vscode.window.showWorkspaceFolderPick({
-          placeHolder: 'Select a folder to run Gemini CLI in',
+          placeHolder: 'Select a folder to run Voyager CLI in',
         });
       }
 
       if (selectedFolder) {
         const geminiCmd = 'gemini';
         const terminal = vscode.window.createTerminal({
-          name: `Gemini CLI (${selectedFolder.name})`,
+          name: `Voyager CLI (${selectedFolder.name})`,
           cwd: selectedFolder.uri.fsPath,
         });
         terminal.show();

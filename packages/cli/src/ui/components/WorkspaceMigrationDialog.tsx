@@ -47,8 +47,8 @@ export function WorkspaceMigrationDialog(props: {
           <>
             <Text color={theme.text.primary}>
               The following extensions failed to migrate. Please try installing
-              them manually. To see other changes, Gemini CLI must be restarted.
-              Press &apos;q&apos; to quit.
+              them manually. To see other changes, Voyager CLI must be
+              restarted. Press &apos;q&apos; to quit.
             </Text>
             <Box flexDirection="column" marginTop={1} marginLeft={2}>
               {failedExtensions.map((failed) => (
@@ -58,7 +58,7 @@ export function WorkspaceMigrationDialog(props: {
           </>
         ) : (
           <Text color={theme.text.primary}>
-            Migration complete. To see changes, Gemini CLI must be restarted.
+            Migration complete. To see changes, Voyager CLI must be restarted.
             Press &apos;q&apos; to quit.
           </Text>
         )}

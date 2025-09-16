@@ -42,6 +42,7 @@ import process from 'node:process';
 import { useHistory } from './hooks/useHistoryManager.js';
 import { useThemeCommand } from './hooks/useThemeCommand.js';
 import { useAuthCommand } from './auth/useAuth.js';
+import { useModelsCommand } from './models/useModels.js';
 import { useQuotaAndFallback } from './hooks/useQuotaAndFallback.js';
 import { useEditorSettings } from './hooks/useEditorSettings.js';
 import { useSettingsCommand } from './hooks/useSettingsCommand.js';
@@ -304,6 +305,8 @@ export const AppContainer = (props: AppContainerProps) => {
     config,
   );
 
+  const { modelError, onModelError } = useModelsCommand(settings);
+
   const { proQuotaRequest, handleProQuotaChoice } = useQuotaAndFallback({
     config,
     historyManager,
@@ -316,6 +319,9 @@ export const AppContainer = (props: AppContainerProps) => {
   const isAuthDialogOpen = authState === AuthState.Updating;
   const isAuthenticating = authState === AuthState.Unauthenticated;
 
+  // Models dialog state
+  const [isModelsDialogOpen, setIsModelsDialogOpen] = useState(false);
+
   // Create handleAuthSelect wrapper for backward compatibility
   const handleAuthSelect = useCallback(
     async (authType: AuthType | undefined, scope: SettingScope) => {
@@ -324,7 +330,7 @@ export const AppContainer = (props: AppContainerProps) => {
         settings.setValue(scope, 'security.auth.selectedType', authType);
 
         try {
-          await config.refreshAuth(authType);
+          await config.refreshAuth(authType, settings.merged as any);
           setAuthState(AuthState.Authenticated);
         } catch (e) {
           onAuthError(
@@ -349,6 +355,39 @@ Logging in with Google... Please restart Voyager CLI to continue.
       setAuthState(AuthState.Authenticated);
     },
     [settings, config, setAuthState, onAuthError],
+  );
+
+  // Create handleModelSelect wrapper for backward compatibility
+  const handleModelSelect = useCallback(
+    async (model: string | undefined, scope: SettingScope) => {
+      if (model) {
+        // Validate the model before setting it
+        const { validateModelWithSettings } = await import(
+          './models/useModels.js'
+        );
+        const error = validateModelWithSettings(model, settings);
+        if (error) {
+          onModelError(error);
+          return;
+        }
+
+        settings.setValue(scope, 'model.selectedModel', model);
+        setIsModelsDialogOpen(false);
+
+        // Refresh auth to apply the new model
+        const authType = settings.merged.security?.auth?.selectedType;
+        if (authType) {
+          try {
+            await config.refreshAuth(authType, settings.merged as any);
+          } catch (e) {
+            onModelError(
+              `Failed to apply model: ${e instanceof Error ? e.message : String(e)}`,
+            );
+          }
+        }
+      }
+    },
+    [settings, config, onModelError],
   );
 
   // Sync user tier from config when authentication changes
@@ -411,6 +450,7 @@ Logging in with Google... Please restart Voyager CLI to continue.
   const slashCommandActions = useMemo(
     () => ({
       openAuthDialog: () => setAuthState(AuthState.Updating),
+      openModelsDialog: () => setIsModelsDialogOpen(true),
       openThemeDialog,
       openEditorDialog,
       openPrivacyNotice: () => setShowPrivacyNotice(true),
@@ -428,6 +468,7 @@ Logging in with Google... Please restart Voyager CLI to continue.
     }),
     [
       setAuthState,
+      setIsModelsDialogOpen,
       openThemeDialog,
       openEditorDialog,
       openSettingsDialog,
@@ -966,6 +1007,7 @@ Logging in with Google... Please restart Voyager CLI to continue.
     isSettingsDialogOpen ||
     isAuthenticating ||
     isAuthDialogOpen ||
+    isModelsDialogOpen ||
     isEditorDialogOpen ||
     showPrivacyNotice ||
     !!proQuotaRequest;
@@ -984,6 +1026,8 @@ Logging in with Google... Please restart Voyager CLI to continue.
       isConfigInitialized,
       authError,
       isAuthDialogOpen,
+      isModelsDialogOpen,
+      modelError,
       editorError,
       isEditorDialogOpen,
       showPrivacyNotice,
@@ -1060,6 +1104,8 @@ Logging in with Google... Please restart Voyager CLI to continue.
       isConfigInitialized,
       authError,
       isAuthDialogOpen,
+      isModelsDialogOpen,
+      modelError,
       editorError,
       isEditorDialogOpen,
       showPrivacyNotice,
@@ -1137,6 +1183,8 @@ Logging in with Google... Please restart Voyager CLI to continue.
       handleAuthSelect,
       setAuthState,
       onAuthError,
+      handleModelSelect,
+      onModelError,
       handleEditorSelect,
       exitEditorDialog,
       exitPrivacyNotice: () => setShowPrivacyNotice(false),
@@ -1160,6 +1208,8 @@ Logging in with Google... Please restart Voyager CLI to continue.
       handleAuthSelect,
       setAuthState,
       onAuthError,
+      handleModelSelect,
+      onModelError,
       handleEditorSelect,
       exitEditorDialog,
       closeSettingsDialog,

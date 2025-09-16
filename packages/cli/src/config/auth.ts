@@ -53,5 +53,12 @@ export function validateAuthMethod(authMethod: string): string | null {
     return null;
   }
 
+  if (authMethod === AuthType.USE_API) {
+    if (!process.env['API_ENDPOINT'] || !process.env['API_AUTH_TOKEN']) {
+      return 'API_ENDPOINT and API_AUTH_TOKEN environment variables are required for API authentication. Add them to your environment and try again (no reload needed if using .env)!';
+    }
+    return null;
+  }
+
   return 'Invalid auth method selected.';
 }

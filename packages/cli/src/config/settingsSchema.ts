@@ -892,6 +892,26 @@ const SETTINGS_SCHEMA = {
           },
         },
       },
+      model: {
+        type: 'object',
+        label: 'Model',
+        category: 'Model',
+        requiresRestart: true,
+        default: {},
+        description: 'Model selection settings.',
+        showInDialog: false,
+        properties: {
+          selectedModel: {
+            type: 'string',
+            label: 'Selected Model',
+            category: 'Model',
+            requiresRestart: true,
+            default: undefined as string | undefined,
+            description: 'The currently selected model for content generation.',
+            showInDialog: false,
+          },
+        },
+      },
     },
   },
 

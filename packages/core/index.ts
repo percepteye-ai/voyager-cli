@@ -35,3 +35,12 @@ export {
 export { makeFakeConfig } from './src/test-utils/config.js';
 export * from './src/utils/pathReader.js';
 export { ClearcutLogger } from './src/telemetry/clearcut-logger/clearcut-logger.js';
+export {
+  API_MODEL_MAPPINGS,
+  mapToApiModel,
+  mapFromApiModel,
+  getModelProvider,
+  getModelsForProvider,
+  isModelSupported,
+  type ModelMapping,
+} from './src/core/apiModelMapping.js';

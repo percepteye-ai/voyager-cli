@@ -184,4 +184,29 @@ describe('createContentGeneratorConfig', () => {
     expect(config.apiKey).toBeUndefined();
     expect(config.vertexai).toBeUndefined();
   });
+
+  it('should configure for unified API when API_ENDPOINT and API_AUTH_TOKEN are set', async () => {
+    vi.stubEnv('API_ENDPOINT', 'https://api.example.com');
+    vi.stubEnv('API_AUTH_TOKEN', 'test-token');
+    vi.stubEnv('API_MODEL', 'gpt-4o');
+    const config = await createContentGeneratorConfig(
+      mockConfig,
+      AuthType.USE_API,
+    );
+    expect(config.apiEndpoint).toBe('https://api.example.com');
+    expect(config.apiAuthToken).toBe('test-token');
+    expect(config.apiModel).toBe('gpt-4o');
+    // apiMode is no longer set in config - fetched from Supabase at runtime
+  });
+
+  it('should not configure for API auth type if required env vars are empty', async () => {
+    vi.stubEnv('API_ENDPOINT', '');
+    vi.stubEnv('API_AUTH_TOKEN', '');
+    const config = await createContentGeneratorConfig(
+      mockConfig,
+      AuthType.USE_API,
+    );
+    expect(config.apiEndpoint).toBeUndefined();
+    expect(config.apiAuthToken).toBeUndefined();
+  });
 });

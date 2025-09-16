@@ -43,6 +43,8 @@ export interface UIState {
   isConfigInitialized: boolean;
   authError: string | null;
   isAuthDialogOpen: boolean;
+  isModelsDialogOpen: boolean;
+  modelError: string | null;
   editorError: string | null;
   isEditorDialogOpen: boolean;
   showPrivacyNotice: boolean;

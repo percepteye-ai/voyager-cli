@@ -22,6 +22,7 @@ import { InstallationManager } from '../utils/installationManager.js';
 import { OpenAIContentGenerator } from './openaiContentGenerator.js';
 import { AnthropicContentGenerator } from './anthropicContentGenerator.js';
 import { GoogleGenAIWrapper } from './googleGenAIWrapper.js';
+import { ApiContentGenerator } from './apiContentGenerator.js';
 
 /**
  * Interface abstracting the core functionalities for generating content and counting tokens.
@@ -53,6 +54,7 @@ export enum AuthType {
   CLOUD_SHELL = 'cloud-shell',
   USE_OPENAI = 'openai-api-key',
   USE_ANTHROPIC = 'anthropic-api-key',
+  USE_API = 'api',
 }
 
 export type ContentGeneratorConfig = {
@@ -64,21 +66,36 @@ export type ContentGeneratorConfig = {
   openaiModel?: string;
   anthropicApiKey?: string;
   anthropicModel?: string;
+  // API-based configuration
+  apiEndpoint?: string;
+  apiAuthToken?: string;
+  apiModel?: string;
+  // configMode is now fetched from Supabase, no longer needed in config
 };
 
 export function createContentGeneratorConfig(
   config: Config,
   authType: AuthType | undefined,
+  settings?: { model?: { selectedModel?: string } },
 ): ContentGeneratorConfig {
   const geminiApiKey = process.env['GEMINI_API_KEY'] || undefined;
   const googleApiKey = process.env['GOOGLE_API_KEY'] || undefined;
   const googleCloudProject = process.env['GOOGLE_CLOUD_PROJECT'] || undefined;
   const googleCloudLocation = process.env['GOOGLE_CLOUD_LOCATION'] || undefined;
   const openaiApiKey = process.env['OPENAI_API_KEY'] || undefined;
-  const openaiModel = process.env['OPENAI_MODEL'] || 'gpt-4o';
+  const openaiModel =
+    settings?.model?.selectedModel || process.env['OPENAI_MODEL'] || 'gpt-4o';
   const anthropicApiKey = process.env['ANTHROPIC_API_KEY'] || undefined;
   const anthropicModel =
-    process.env['ANTHROPIC_MODEL'] || 'claude-3-5-sonnet-20241022';
+    settings?.model?.selectedModel ||
+    process.env['ANTHROPIC_MODEL'] ||
+    'claude-3-5-sonnet-20241022';
+
+  // API-based configuration
+  const apiEndpoint = process.env['API_ENDPOINT'] || undefined;
+  const apiAuthToken = process.env['API_AUTH_TOKEN'] || undefined;
+  const apiModel =
+    settings?.model?.selectedModel || process.env['API_MODEL'] || 'gpt-4o';
 
   const contentGeneratorConfig: ContentGeneratorConfig = {
     authType,
@@ -120,6 +137,16 @@ export function createContentGeneratorConfig(
   if (authType === AuthType.USE_ANTHROPIC && anthropicApiKey) {
     contentGeneratorConfig.anthropicApiKey = anthropicApiKey;
     contentGeneratorConfig.anthropicModel = anthropicModel;
+
+    return contentGeneratorConfig;
+  }
+
+  // Handle unified API authentication type
+  if (authType === AuthType.USE_API && apiEndpoint && apiAuthToken) {
+    contentGeneratorConfig.apiEndpoint = apiEndpoint;
+    contentGeneratorConfig.apiAuthToken = apiAuthToken;
+    contentGeneratorConfig.apiModel = apiModel;
+    // configMode will be fetched from Supabase at runtime
 
     return contentGeneratorConfig;
   }
@@ -205,6 +232,24 @@ export async function createContentGenerator(
       gcConfig,
     );
     return new LoggingContentGenerator(anthropicGenerator, gcConfig);
+  }
+
+  // Handle unified API-based content generator
+  if (config.authType === AuthType.USE_API) {
+    if (!config.apiEndpoint || !config.apiAuthToken) {
+      throw new Error(
+        'API endpoint and auth token are required for API-based authentication',
+      );
+    }
+
+    // Backend fetches configMode from Supabase, no need to fetch it here
+    const apiGenerator = new ApiContentGenerator(
+      config.apiEndpoint,
+      config.apiAuthToken,
+      config.apiModel || 'gpt-4o',
+      gcConfig,
+    );
+    return new LoggingContentGenerator(apiGenerator, gcConfig);
   }
 
   throw new Error(

@@ -56,10 +56,16 @@ import { handleFallback } from '../fallback/handler.js';
 import type { RoutingContext } from '../routing/routingStrategy.js';
 
 export function isThinkingSupported(model: string) {
+  if (typeof model !== 'string') {
+    return false;
+  }
   return model.startsWith('gemini-2.5') || model === DEFAULT_GEMINI_MODEL_AUTO;
 }
 
 export function isThinkingDefault(model: string) {
+  if (typeof model !== 'string') {
+    return false;
+  }
   if (model.startsWith('gemini-2.5-flash-lite')) {
     return false;
   }
@@ -231,6 +237,13 @@ export class GeminiClient {
       const userMemory = this.config.getUserMemory();
       const systemInstruction = getCoreSystemPrompt(userMemory);
       const model = this.config.getModel();
+
+      // Ensure model is a string
+      if (typeof model !== 'string') {
+        throw new Error(
+          `Invalid model type: expected string, got ${typeof model}`,
+        );
+      }
 
       const config: GenerateContentConfig = { ...this.generateContentConfig };
 

@@ -466,7 +466,10 @@ export class Config {
     return this.contentGenerator;
   }
 
-  async refreshAuth(authMethod: AuthType) {
+  async refreshAuth(
+    authMethod: AuthType,
+    settings?: { model?: { selectedModel?: string } },
+  ) {
     // Vertex and Genai have incompatible encryption and sending history with
     // throughtSignature from Genai to Vertex will fail, we need to strip them
     if (
@@ -480,6 +483,7 @@ export class Config {
     const newContentGeneratorConfig = createContentGeneratorConfig(
       this,
       authMethod,
+      settings,
     );
     this.contentGenerator = await createContentGenerator(
       newContentGeneratorConfig,
@@ -488,6 +492,15 @@ export class Config {
     );
     // Only assign to instance properties after successful initialization
     this.contentGeneratorConfig = newContentGeneratorConfig;
+
+    // Update the model based on the content generator config
+    if (newContentGeneratorConfig.apiModel) {
+      this.setModel(newContentGeneratorConfig.apiModel);
+    } else if (newContentGeneratorConfig.openaiModel) {
+      this.setModel(newContentGeneratorConfig.openaiModel);
+    } else if (newContentGeneratorConfig.anthropicModel) {
+      this.setModel(newContentGeneratorConfig.anthropicModel);
+    }
 
     // Initialize BaseLlmClient now that the ContentGenerator is available
     this.baseLlmClient = new BaseLlmClient(this.contentGenerator, this);

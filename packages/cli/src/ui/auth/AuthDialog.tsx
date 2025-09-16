@@ -56,6 +56,7 @@ export function AuthDialog({
     { label: 'Vertex AI', value: AuthType.USE_VERTEX_AI },
     { label: 'Use OpenAI', value: AuthType.USE_OPENAI },
     { label: 'Use Anthropic', value: AuthType.USE_ANTHROPIC },
+    { label: 'Use API Gateway', value: AuthType.USE_API },
   ];
 
   if (settings.merged.security?.auth?.enforcedType) {
@@ -94,6 +95,10 @@ export function AuthDialog({
       return item.value === AuthType.USE_GEMINI;
     }
 
+    if (process.env['API_ENDPOINT'] && process.env['API_AUTH_TOKEN']) {
+      return item.value === AuthType.USE_API;
+    }
+
     return item.value === AuthType.LOGIN_WITH_GOOGLE;
   });
   if (settings.merged.security?.auth?.enforcedType) {
@@ -104,8 +109,8 @@ export function AuthDialog({
     async (authType: AuthType | undefined, scope: SettingScope) => {
       if (authType) {
         await clearCachedCredentialFile();
-
         settings.setValue(scope, 'security.auth.selectedType', authType);
+
         if (
           authType === AuthType.LOGIN_WITH_GOOGLE &&
           config.isBrowserLaunchSuppressed()

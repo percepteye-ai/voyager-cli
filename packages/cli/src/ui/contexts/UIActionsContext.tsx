@@ -24,6 +24,8 @@ export interface UIActions {
   ) => void;
   setAuthState: (state: AuthState) => void;
   onAuthError: (error: string) => void;
+  handleModelSelect: (model: string | undefined, scope: SettingScope) => void;
+  onModelError: (error: string) => void;
   handleEditorSelect: (
     editorType: EditorType | undefined,
     scope: SettingScope,

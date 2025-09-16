@@ -14,6 +14,7 @@ import { ThemeDialog } from './ThemeDialog.js';
 import { SettingsDialog } from './SettingsDialog.js';
 import { AuthInProgress } from '../auth/AuthInProgress.js';
 import { AuthDialog } from '../auth/AuthDialog.js';
+import { ModelsDialog } from '../models/ModelsDialog.js';
 import { EditorSettingsDialog } from './EditorSettingsDialog.js';
 import { PrivacyNotice } from '../privacy/PrivacyNotice.js';
 import { WorkspaceMigrationDialog } from './WorkspaceMigrationDialog.js';
@@ -158,6 +159,18 @@ export const DialogManager = () => {
           setAuthState={uiActions.setAuthState}
           authError={uiState.authError}
           onAuthError={uiActions.onAuthError}
+        />
+      </Box>
+    );
+  }
+  if (uiState.isModelsDialogOpen) {
+    return (
+      <Box flexDirection="column">
+        <ModelsDialog
+          config={config}
+          settings={settings}
+          onModelError={uiActions.onModelError}
+          onModelSelect={uiActions.handleModelSelect}
         />
       </Box>
     );

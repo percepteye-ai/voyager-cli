@@ -54,7 +54,7 @@ export enum AuthType {
   CLOUD_SHELL = 'cloud-shell',
   USE_OPENAI = 'openai-api-key',
   USE_ANTHROPIC = 'anthropic-api-key',
-  USE_API = 'api',
+  USE_API = 'api-gateway',
 }
 
 export type ContentGeneratorConfig = {

@@ -17,10 +17,9 @@ export interface ModelMapping {
 
 export const API_MODEL_MAPPINGS: ModelMapping[] = [
   // OpenAI models
+  { internal: 'gpt-5', api: 'gpt-5', provider: 'openai' },
   { internal: 'gpt-4o', api: 'gpt-4o', provider: 'openai' },
-  { internal: 'gpt-4o-mini', api: 'gpt-4o-mini', provider: 'openai' },
-  { internal: 'gpt-4-turbo', api: 'gpt-4-turbo', provider: 'openai' },
-  { internal: 'gpt-3.5-turbo', api: 'gpt-3.5-turbo', provider: 'openai' },
+  { internal: 'gpt-4.1', api: 'gpt-4.1', provider: 'openai' },
 
   // Anthropic models
   {

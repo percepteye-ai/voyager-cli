@@ -30,8 +30,8 @@ import { ExtensionUpdateState } from '../ui/state/extensions.js';
 
 export const EXTENSIONS_DIRECTORY_NAME = path.join(GEMINI_DIR, 'extensions');
 
-export const EXTENSIONS_CONFIG_FILENAME = 'gemini-extension.json';
-export const INSTALL_METADATA_FILENAME = '.gemini-extension-install.json';
+export const EXTENSIONS_CONFIG_FILENAME = 'voyager-extension.json';
+export const INSTALL_METADATA_FILENAME = '.voyager-extension-install.json';
 
 export interface Extension {
   path: string;

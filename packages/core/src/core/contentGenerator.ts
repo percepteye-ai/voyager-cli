@@ -19,7 +19,7 @@ import type { Config } from '../config/config.js';
 import type { UserTierId } from '../code_assist/types.js';
 import { LoggingContentGenerator } from './loggingContentGenerator.js';
 import { InstallationManager } from '../utils/installationManager.js';
-import { OpenAIContentGenerator } from './openaiContentGenerator.js';
+import { createOpenAIContentGenerator } from './openaiContentGenerator/index.js';
 import { AnthropicContentGenerator } from './anthropicContentGenerator.js';
 import { GoogleGenAIWrapper } from './googleGenAIWrapper.js';
 import { ApiContentGenerator } from './apiContentGenerator.js';
@@ -212,11 +212,7 @@ export async function createContentGenerator(
     if (!config.openaiApiKey) {
       throw new Error('OpenAI API key is required for OpenAI authentication');
     }
-    const openaiGenerator = new OpenAIContentGenerator(
-      config.openaiApiKey,
-      config.openaiModel || 'gpt-4o',
-      gcConfig,
-    );
+    const openaiGenerator = createOpenAIContentGenerator(config, gcConfig);
     return new LoggingContentGenerator(openaiGenerator, gcConfig);
   }
 

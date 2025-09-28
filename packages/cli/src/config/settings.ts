@@ -47,7 +47,7 @@ function getMergeStrategyForPath(path: string[]): MergeStrategy | undefined {
 
 export type { Settings, MemoryImportFormat };
 
-export const SETTINGS_DIRECTORY_NAME = '.gemini';
+export const SETTINGS_DIRECTORY_NAME = '.voyager';
 
 export const USER_SETTINGS_PATH = Storage.getGlobalSettingsPath();
 export const USER_SETTINGS_DIR = path.dirname(USER_SETTINGS_PATH);
@@ -101,7 +101,7 @@ const MIGRATION_MAP: Record<string, string> = {
   mcpServerCommand: 'mcp.serverCommand',
   memoryImportFormat: 'context.importFormat',
   memoryDiscoveryMaxDirs: 'context.discoveryMaxDirs',
-  model: 'model.name',
+  model: 'model.selectedModel',
   preferredEditor: 'general.preferredEditor',
   sandbox: 'tools.sandbox',
   selectedAuthType: 'security.auth.selectedType',

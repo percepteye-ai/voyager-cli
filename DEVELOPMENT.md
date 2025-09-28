@@ -16,6 +16,9 @@
 
    # Build CLI package
    cd ../cli && npm run build
+
+   # Single Line
+   cd packages/core && npm run build && cd ../cli && npm run build && cd ../..
    ```
 
 3. **Install globally:**
@@ -26,7 +29,7 @@
 
 4. **Run:**
    ```bash
-   voyager
+   voy
    ```
 
 ## API Gateway Authentication

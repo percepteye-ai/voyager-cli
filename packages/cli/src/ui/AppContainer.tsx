@@ -378,7 +378,9 @@ Logging in with Google... Please restart Voyager CLI to continue.
         const authType = settings.merged.security?.auth?.selectedType;
         if (authType) {
           try {
-            await config.refreshAuth(authType, settings.merged as any);
+            await config.refreshAuth(authType, {
+              model: { selectedModel: model },
+            });
           } catch (e) {
             onModelError(
               `Failed to apply model: ${e instanceof Error ? e.message : String(e)}`,

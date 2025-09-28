@@ -463,7 +463,7 @@ const SETTINGS_SCHEMA = {
     description: 'Settings related to the generative model.',
     showInDialog: false,
     properties: {
-      name: {
+      selectedModel: {
         type: 'string',
         label: 'Model',
         category: 'Model',

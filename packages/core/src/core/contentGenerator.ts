@@ -243,7 +243,6 @@ export async function createContentGenerator(
       config.apiEndpoint,
       config.apiAuthToken,
       config.apiModel || 'gpt-4o',
-      gcConfig,
     );
     return new LoggingContentGenerator(apiGenerator, gcConfig);
   }

@@ -11,14 +11,8 @@
 2. **Build packages:**
 
    ```bash
-   # Build core package
-   cd packages/core && npm run build
-
-   # Build CLI package
-   cd ../cli && npm run build
-
-   # Single Line
-   cd packages/core && npm run build && cd ../cli && npm run build && cd ../..
+   # Build  package
+   npm run build && npm i && npm i -g .
    ```
 
 3. **Install globally:**

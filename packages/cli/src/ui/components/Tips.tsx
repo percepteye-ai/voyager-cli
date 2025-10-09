@@ -24,7 +24,7 @@ export const Tips: React.FC<TipsProps> = ({ config }) => {
       <Text color={theme.text.primary}>
         2. Be specific for the best results.
       </Text>
-      {geminiMdFileCount === 0 && (
+      {/* {geminiMdFileCount === 0 && (
         <Text color={theme.text.primary}>
           3. Create{' '}
           <Text bold color={theme.text.accent}>
@@ -32,9 +32,9 @@ export const Tips: React.FC<TipsProps> = ({ config }) => {
           </Text>{' '}
           files to customize your interactions with Voyager.
         </Text>
-      )}
+      )} */}
       <Text color={theme.text.primary}>
-        {geminiMdFileCount === 0 ? '4.' : '3.'}{' '}
+        {geminiMdFileCount === 0 ? '3.' : '3.'}{' '}
         <Text bold color={theme.text.accent}>
           /help
         </Text>{' '}

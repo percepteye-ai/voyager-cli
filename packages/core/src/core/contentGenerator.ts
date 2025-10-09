@@ -84,7 +84,7 @@ export function createContentGeneratorConfig(
   const googleCloudLocation = process.env['GOOGLE_CLOUD_LOCATION'] || undefined;
   const openaiApiKey = process.env['OPENAI_API_KEY'] || undefined;
   const openaiModel =
-    settings?.model?.selectedModel || process.env['OPENAI_MODEL'] || 'gpt-4o';
+    settings?.model?.selectedModel || process.env['OPENAI_MODEL'];
   const anthropicApiKey = process.env['ANTHROPIC_API_KEY'] || undefined;
   const anthropicModel =
     settings?.model?.selectedModel ||
@@ -94,8 +94,7 @@ export function createContentGeneratorConfig(
   // API-based configuration
   const apiEndpoint = process.env['API_ENDPOINT'] || undefined;
   const apiAuthToken = process.env['API_AUTH_TOKEN'] || undefined;
-  const apiModel =
-    settings?.model?.selectedModel || process.env['API_MODEL'] || 'gpt-4o';
+  const apiModel = settings?.model?.selectedModel || process.env['API_MODEL'];
 
   const contentGeneratorConfig: ContentGeneratorConfig = {
     authType,

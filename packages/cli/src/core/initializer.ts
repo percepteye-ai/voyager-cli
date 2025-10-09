@@ -36,6 +36,7 @@ export async function initializeApp(
   const authError = await performInitialAuth(
     config,
     settings.merged.security?.auth?.selectedType,
+    settings.merged,
   );
   const themeError = validateTheme(settings);
 

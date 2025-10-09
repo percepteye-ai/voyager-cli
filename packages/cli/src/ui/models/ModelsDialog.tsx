@@ -67,13 +67,6 @@ export function ModelsDialog({
     if (index !== -1) {
       initialModelIndex = index;
     }
-  } else {
-    // Default to a popular model if none selected
-    const defaultModel = 'gpt-4o';
-    const index = items.findIndex((item) => item.value === defaultModel);
-    if (index !== -1) {
-      initialModelIndex = index;
-    }
   }
 
   const onSelect = useCallback(

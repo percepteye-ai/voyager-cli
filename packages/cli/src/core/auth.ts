@@ -19,13 +19,14 @@ import {
 export async function performInitialAuth(
   config: Config,
   authType: AuthType | undefined,
+  settings?: { model?: { selectedModel?: string } },
 ): Promise<string | null> {
   if (!authType) {
     return null;
   }
 
   try {
-    await config.refreshAuth(authType);
+    await config.refreshAuth(authType, settings);
     // The console.log is intentionally left out here.
     // We can add a dedicated startup message later if needed.
   } catch (e) {

@@ -33,7 +33,6 @@ Set environment variables:
 ```bash
 export API_ENDPOINT="https://your-api-endpoint.com"
 export API_AUTH_TOKEN="your-auth-token"
-export API_MODEL="gpt-4o"  # optional
 ```
 
 Then select "Use API Gateway" in the auth dialog.

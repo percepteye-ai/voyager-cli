@@ -268,8 +268,15 @@ export async function main() {
     if (process.env['CLOUD_SHELL'] === 'true') {
       settings.setValue(
         SettingScope.User,
-        'selectedAuthType',
+        'security.auth.selectedType',
         AuthType.CLOUD_SHELL,
+      );
+    } else {
+      // Default to API Gateway authentication
+      settings.setValue(
+        SettingScope.User,
+        'security.auth.selectedType',
+        AuthType.USE_API,
       );
     }
   }
